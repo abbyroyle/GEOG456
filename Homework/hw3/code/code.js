@@ -1,4 +1,4 @@
-var map = L.map('map').setView([36.1476, -80.7142], 8);
+var map = L.map('map').setView([36.1476, -80.7142], 6);
 
 // Define tile layers
 var OSM = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -12,7 +12,7 @@ var Esri_WorldTopoMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest
 
 // Define marker style
 var geojsonMarkerOptions = {
-    radius: 20,
+    radius: 10,
     fillColor: "#FFC0CB",
     color: "#000",
     weight: 1,
