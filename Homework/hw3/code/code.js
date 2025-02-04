@@ -12,7 +12,7 @@ var Esri_WorldTopoMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest
 
 // Define marker style
 var geojsonMarkerOptions = {
-    radius: 100,
+    radius: 20,
     fillColor: "#FFC0CB",
     color: "#000",
     weight: 1,
@@ -29,12 +29,12 @@ var gasLayer = L.geoJSON(gas_plants, {
 }).addTo(map);
 
 var baseLayers = {
-    "OpenStreetMap": OSM,
-    "ESRI Topographic Map": Esri_WorldTopoMap
-};
+    "Open Street Map": OSM,
+    "ESRI Topo Map": Esri_WorldTopoMap
+    };
 
-var overlayMaps = {
-    "Manufactured Gas Sites": gasLayer
-};
-
-L.control.layers(baseLayers, overlayMaps).addTo(map);
+    var overlayMaps = {
+        "Manufactured Gas Plants": gasLayer
+    };
+    var layerControl = L.control.layers(baseLayers,overlayMaps).addTo(map);
+    
