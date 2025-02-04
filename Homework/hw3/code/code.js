@@ -1,4 +1,4 @@
-var map = L.map('map').setView([36.1476, -80.7142], 6);
+var map = L.map('map').setView([36.1476, -80.7142], 7);
 
 // Define tile layers
 var OSM = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -12,12 +12,7 @@ var Esri_WorldTopoMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest
 
 // Define marker style
 var geojsonMarkerOptions = {
-    radius: 10,
-    fillColor: "#FFC0CB",
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
+    radius: 7, fillColor: "#FFC0CB", color: "#000", weight: 1, opacity: 1, fillOpacity: 0.9
 };
 
 var gasLayer = L.geoJSON(gas_plants, {
