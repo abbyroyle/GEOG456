@@ -30,9 +30,9 @@
             myNewCell2.innerHTML = road.RTTYP
 
             if (road.RTTYP === "M") { 
-                myNewRow.className = "majorRoad";
-            } else {
-                myNewRow.className = "minorRoad";
+                myNewCell2.style.backgroundColor = 'yellow';
+            } else { 
+                myNewCell2.style.backgroundColor = 'grey';
             }
 
             myNewRow.append(myNewCell1);
