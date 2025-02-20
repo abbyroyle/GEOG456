@@ -8,8 +8,38 @@
 <body>
     <h1>Homework 4</h1>
     <h2>Abby Royle</h2>
-    <h3>Two files showing road networks in North Carolina for different years (2010 and 2020). In the console, type data2010 for the year 2010 and data2020 for the year 2020. Source: US Census</h3>
+    <h3>Two files showing road networks in North Carolina for different years (2010 and 2020).</h3>
     <script src="./Homework/usroads2020.js"></script>
     <script src="./Homework/usrooads2010.js"></script>
+    <table id="mytable">
+        <tr>
+            <th>Road Name</th>
+            <th>Road Type</th>
+        </tr>
+    </table>
+    <script>
+        var x = document.getElementById('mytable');
+
+        for (var i = 0; i < data2010.features.length; i++) {
+            var road = data2010.features[i].properties;
+            var myNewRow = document.createElement('tr');
+            var myNewCell1 = document.createElement('td');
+            var myNewCell2 = document.createElement('td');
+
+            myNewCell1.innerHTML = road.FULLNAME
+            myNewCell2.innerHTML = road.RTTYP
+
+            if (road.RTTYP === "M") { 
+                myNewRow.className = "majorRoad";
+            } else {
+                myNewRow.className = "minorRoad";
+            }
+
+            myNewRow.append(myNewCell1);
+            myNewRow.append(myNewCell2);
+            x.append(myNewRow);
+        }
+    </script>
+
 </body>
 </html>
