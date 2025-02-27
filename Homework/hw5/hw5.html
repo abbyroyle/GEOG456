@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Followill Leaflet HW 9/22</title>
+    <title>Protected Areas in the EU (2000-2022)</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
     integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
     crossorigin=""/>
@@ -23,18 +23,17 @@
 
 <body>
 
-<h2>Protected Areas in the EU from 2000-2024</h2>
+<h2>Protected Areas in the EU from 2000-2022</h2>
 <h3>Abby Royle</h3>
-        <h3 id="daYear">Year</h3>
-        <input id="yearSlider" type="range" name="year" min="2000" max="2022" oninput="moveSlider(this.value)" value="2000">
-    <br></br>
-    <div id="map"></div>
-
+<h3 id="daYear">Year</h3>
+<input id="yearSlider" type="range" name="year" min="2000" max="2022" oninput="moveSlider(this.value)" value="2000">
+<br><br>
+<div id="map"></div>
 
 </body>
 <script>
 
-    var map = L.map('map').setView([20, 0], 2); 
+    var map = L.map('map').setView([55, 10], 4); // Centered on the EU
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     }).addTo(map);
@@ -55,7 +54,7 @@
     }
 
     function getColor(value) {
-        return value >= 50 ? "#00441b" :  // Dark green
+        return value >= 50 ? "#00441b" :  
                value >= 40 ? "#006d2c" :
                value >= 30 ? "#238b45" :
                value >= 20 ? "#41ab5d" :
@@ -65,10 +64,11 @@
                             "#f7fcf5"; 
     }
 
-    var geojson = L.geoJSON(geojsonData, {style: myStyle}).addTo(map);
+    // **Fix: Use "protected" instead of "geojsonData"**
+    var geojson = L.geoJSON(protected, {style: myStyle}).addTo(map);
 
     function moveSlider(value) { 
-        document.getElementById('daYear').innerHTML = 'Year: ' + value; // Update year text
+        document.getElementById('daYear').innerHTML = 'Year: ' + value;
         myCurrentSelectionYear = value;
         geojson.eachLayer(function (layer) {
             layer.setStyle(myStyle(layer.feature));
