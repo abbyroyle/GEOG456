@@ -62,12 +62,12 @@
                value >= 10 ? "#74c476" :
                value >= 5  ? "#a1d99b" :
                value >= 1  ? "#c7e9c0" :
-                            "#f7fcf5"; // Very light green for no data or 0 values
+                            "#f7fcf5"; 
     }
 
     var geojson = L.geoJSON(geojsonData, {style: myStyle}).addTo(map);
 
-    function moveSlider(value) { // Function called by the slider
+    function moveSlider(value) { 
         document.getElementById('daYear').innerHTML = 'Year: ' + value; // Update year text
         myCurrentSelectionYear = value;
         geojson.eachLayer(function (layer) {
@@ -75,11 +75,11 @@
         });
     }
 
-    moveSlider(myCurrentSelectionYear); // Initialize with the first year
+    moveSlider(myCurrentSelectionYear); 
 
     window.onload = function() {
         document.getElementById('yearSlider').value = 2000;
-    }; // Reset slider on refresh
+    }; 
 
 </script>   
 
