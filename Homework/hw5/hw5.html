@@ -23,8 +23,8 @@
 
 <body>
 
-<h2>Choropleth Map Over Time</h2>
-<h3>Sarah Followill - Leaflet HW 9.22.22</h3>
+<h2>Protected Areas in the EU from 2000-2024</h2>
+<h3>Abby Royle</h3>
         <h3 id="daYear">Year</h3>
         <input id="yearSlider" type="range" name="year" min="2000" max="2022" oninput="moveSlider(this.value)" value="2000">
     <br></br>
@@ -33,14 +33,13 @@
 
 </body>
 <script>
-    // HW made by Sarah Followill // Edited and adapted for green-based choropleth mapping
 
-    var map = L.map('map').setView([20, 0], 2); // Centered globally
+    var map = L.map('map').setView([20, 0], 2); 
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     }).addTo(map);
 
-    var myCurrentSelectionYear = 2000; // Initial year
+    var myCurrentSelectionYear = 2000; 
 
     function myStyle(feature) {
         var yearKey = "reshaped_data_Value_" + myCurrentSelectionYear;
