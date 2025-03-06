@@ -31,7 +31,8 @@
         align-items: flex-end;
         height: 500px;
         width: 50%;
-        background-color: white;
+        background-color: bisque;
+
     }
     .bar {
         width: 10%;
@@ -68,7 +69,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-// Define the color function for polygons
+
 function style(feature) {
     return {
         fillColor: getColor(feature.properties["reshaped_data_Value_2022"]), 
@@ -79,7 +80,7 @@ function style(feature) {
     };
 }
 
-// Define colors based on protected area size
+
 function getColor(value) {
     return value >= 50 ? "#00441b" :  
            value >= 40 ? "#006d2c" :
@@ -91,27 +92,23 @@ function getColor(value) {
                         "#f7fcf5"; 
 }
 
-// Function to handle mouseover events
 function onEachFeature(feature, layer) {
     layer.on({mouseover: showGraph});
 }
 
-// Reference to the info div
 var infoDiv = document.getElementById('info');
 
-// Function to create an array from a country's data
 function featureToDataArray(feature) {
     var years = Object.keys(feature.properties).filter(key => key.includes("reshaped_data_Value_"));
     var dataArray = years.map(yearKey => ({
         year: yearKey.replace("reshaped_data_Value_", ""),
-        value: feature.properties[yearKey] || 0 // Default to 0 if missing
-    }));
-    return dataArray.sort((a, b) => a.year - b.year); // Ensure chronological order
+        value: feature.properties[yearKey] 
+
+    return dataArray.sort((a, b) => a.year - b.year); 
 }
 
-// Function to generate bar chart in the `info` div
 function showGraph(e) {
-    infoDiv.innerHTML = ''; // Clear previous data
+    infoDiv.innerHTML = ''; 
     var countryName = e.target.feature.properties.NAME;
     
     var title = document.createElement("h3");
@@ -122,7 +119,7 @@ function showGraph(e) {
     dataArray.forEach(data => addBar(data));
 }
 
-// Function to create and add bars to the chart
+
 function addBar(data) {
     var barDiv = document.createElement("div");
     barDiv.className = "bar";
@@ -131,7 +128,6 @@ function addBar(data) {
     infoDiv.appendChild(barDiv);
 }
 
-// Load the GeoJSON layer
 var geojson = L.geoJSON(protected, {
     style: style,
     onEachFeature: onEachFeature
