@@ -99,13 +99,34 @@ function onEachFeature(feature, layer) {
 var infoDiv = document.getElementById('info');
 
 function featureToDataArray(feature) {
-    var years = Object.keys(feature.properties).filter(key => key.includes("reshaped_data_Value_"));
-    var dataArray = years.map(yearKey => ({
-        year: yearKey.replace("reshaped_data_Value_", ""),
-        value: feature.properties[yearKey] 
-
-    return dataArray.sort((a, b) => a.year - b.year); 
+    var dataArray = [
+        { year: "2000", value: feature.properties["reshaped_data_Value_2000"] },
+        { year: "2001", value: feature.properties["reshaped_data_Value_2001"] },
+        { year: "2002", value: feature.properties["reshaped_data_Value_2002"] },
+        { year: "2003", value: feature.properties["reshaped_data_Value_2003"] },
+        { year: "2004", value: feature.properties["reshaped_data_Value_2004"] },
+        { year: "2005", value: feature.properties["reshaped_data_Value_2005"] },
+        { year: "2006", value: feature.properties["reshaped_data_Value_2006"] },
+        { year: "2007", value: feature.properties["reshaped_data_Value_2007"] },
+        { year: "2008", value: feature.properties["reshaped_data_Value_2008"] },
+        { year: "2009", value: feature.properties["reshaped_data_Value_2009"] },
+        { year: "2010", value: feature.properties["reshaped_data_Value_2010"] },
+        { year: "2011", value: feature.properties["reshaped_data_Value_2011"] },
+        { year: "2012", value: feature.properties["reshaped_data_Value_2012"] },
+        { year: "2013", value: feature.properties["reshaped_data_Value_2013"] },
+        { year: "2014", value: feature.properties["reshaped_data_Value_2014"] },
+        { year: "2015", value: feature.properties["reshaped_data_Value_2015"] },
+        { year: "2016", value: feature.properties["reshaped_data_Value_2016"] },
+        { year: "2017", value: feature.properties["reshaped_data_Value_2017"] },
+        { year: "2018", value: feature.properties["reshaped_data_Value_2018"] },
+        { year: "2019", value: feature.properties["reshaped_data_Value_2019"] },
+        { year: "2020", value: feature.properties["reshaped_data_Value_2020"] },
+        { year: "2021", value: feature.properties["reshaped_data_Value_2021"] },
+        { year: "2022", value: feature.properties["reshaped_data_Value_2022"] }
+    ];
+    return dataArray;
 }
+
 
 function showGraph(e) {
     infoDiv.innerHTML = ''; 
@@ -123,7 +144,7 @@ function showGraph(e) {
 function addBar(data) {
     var barDiv = document.createElement("div");
     barDiv.className = "bar";
-    barDiv.style.height = (data.value * 4) + 'px'; // Scale height
+    barDiv.style.height = (data.value * 4) + 'px'; 
     barDiv.innerHTML = data.year + "<br>" + data.value;
     infoDiv.appendChild(barDiv);
 }
