@@ -22,29 +22,30 @@
         height: 100vh;
     }
     #map { 
-        height: 500px;
+        height: 300px;
         width: 50%; 
     }
     #info {
         border: 1px solid black;
         display: flex;
         align-items: flex-end;
-        height: 500px;
+        height: 300px;
         width: 50%;
         background-color: white;
-        padding: 10px;
-        overflow-x: auto;
     }
     .bar {
-        width: 30px;
+        width: 10%;
         display: flex;
         align-items: center; 
         justify-content: center; 
         background-color: green;
         border: 1px solid black;
         text-align: center;
-        color: white;
         margin-right: 5px;
+        font-size: 10px; 
+        line-height: 1.1; 
+        padding: 2px;
+
     }
 </style>
 
@@ -55,12 +56,12 @@
 
 <div id="container">
     <div id="map"></div>
-    <div id="info"><b>Hover over a country to see its data</b></div>
+    <div id="info"></div>
 </div>
 
 <script>
 
-// Initialize the map centered on Europe
+
 var map = L.map('map', {attributionControl: false }).setView([55, 10], 4);
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -72,7 +73,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // Define the color function for polygons
 function style(feature) {
     return {
-        fillColor: getColor(feature.properties["reshaped_data_Value_2022"]), // Using the latest year
+        fillColor: getColor(feature.properties["reshaped_data_Value_2022"]), 
         weight: 1,
         opacity: 1,
         color: 'white',
