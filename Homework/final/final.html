@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protected Areas in the EU (2000–2022)</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+    crossorigin=""/>
+    
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin=""></script>
+    
+    <script src="Final_protected.js"></script> 
+</head>
+
+<style>
+    body {
+        background-color: #e6f4ea;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 20px;
+        margin: 0;
+    }
+
+    h2 {
+        margin-bottom: 0;
+        color: #205522;
+    }
+
+    h3 {
+        margin-top: 5px;
+        font-weight: normal;
+        color: #205522;
+    }
+
+    #map {
+        width: 1000px;
+        height: 600px;
+        margin: 20px auto;
+        border: 2px solid #ccc;
+        box-shadow: 0px 0px 8px rgba(0,0,0,0.2);
+    }
+
+    #yearSlider {
+        width: 500px;
+        margin: 15px auto;
+        display: block;
+        appearance: none;
+        height: 10px;
+        background: #c7e9c0;
+        outline: none;
+        border-radius: 5px;
+    }
+
+    #yearSlider::-webkit-slider-thumb {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: #238b45;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid white;
+        box-shadow: 0 0 3px rgba(0,0,0,0.3);
+    }
+
+    #yearSlider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        background: #238b45;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid white;
+    }
+</style>
+
+<body>
+
+    <h2>Protected Areas in the EU from 2000–2022</h2>
+    <h3>Abby Royle</h3>
+    <h3 id="daYear">Year: 2000</h3>
+
+    <input id="yearSlider" type="range" name="year" min="2000" max="2022" oninput="moveSlider(this.value)" value="2000">
+
+    <div id="map"></div>
+
+<script>
+    var map = L.map('map').setView([50.1, 10.5], 4);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    }).addTo(map);
+
+    var myCurrentSelectionYear = 2000; 
+
+    function myStyle(feature) {
+        var yearKey = "reshaped_data_Value_" + myCurrentSelectionYear;
+        var value = feature.properties[yearKey];
+
+        return {
+            "color": "white",
+            "weight": 1,
+            "opacity": 0.65,
+            "fillColor": getColor(value),
+            "fillOpacity": 0.75
+        };
+    }
+
+    function getColor(value) {
+        return value >= 50 ? "#00441b" :  
+               value >= 40 ? "#006d2c" :
+               value >= 30 ? "#238b45" :
+               value >= 20 ? "#41ab5d" :
+               value >= 10 ? "#74c476" :
+               value >= 5  ? "#a1d99b" :
+               value >= 1  ? "#c7e9c0" :
+                            "#f7fcf5"; 
+    }
+
+    var geojson = L.geoJSON(protected, {style: myStyle}).addTo(map);
+
+    function moveSlider(value) { 
+        document.getElementById('daYear').innerHTML = 'Year: ' + value;
+        myCurrentSelectionYear = value;
+        geojson.eachLayer(function (layer) {
+            layer.setStyle(myStyle(layer.feature));
+        });
+    }
+
+    moveSlider(myCurrentSelectionYear); 
+
+    window.onload = function() {
+        document.getElementById('yearSlider').value = 2000;
+    }; 
+</script>
+
+</body>
+</html>
