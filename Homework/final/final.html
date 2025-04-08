@@ -75,6 +75,23 @@
         cursor: pointer;
         border: 2px solid white;
     }
+    #infoBox {
+    background-color: #f0f9f1;
+    border-left: 6px solid #41ab5d;
+    padding: 20px;
+    margin: 30px auto;
+    width: 900px;
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.6;
+    }
+    #infoBox ul {
+        margin-top: 10px;
+        padding-left: 20px;
+    }
+
 </style>
 
 <body>
@@ -86,6 +103,20 @@
     <input id="yearSlider" type="range" name="year" min="2000" max="2022" oninput="moveSlider(this.value)" value="2000">
 
     <div id="map"></div>
+    <div id="infoBox">
+        <p><strong>What is a Protected Area?</strong></p>
+        <p>
+            “A clearly defined geographical space, recognised, dedicated and managed, through legal or other effective means, to achieve the long-term conservation of nature with associated ecosystem services and cultural values.”
+            <br><em>– International Union for Conservation of Nature (IUCN)</em>
+        </p>
+        <p><strong>Common Designations:</strong></p>
+        <ul>
+            <li>World Heritage Sites</li>
+            <li>National Parks</li>
+            <li>Nature Reserves</li>
+            <li>Other international, national, or regional conservation areas</li>
+        </ul>
+    </div>
 
 <script>
 
