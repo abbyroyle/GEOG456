@@ -248,13 +248,35 @@ function onEachFeature(feature, layer) {
     });
 }
 
-// ✅ THIRD: Now safe to add geojson layer
 var geojson = L.geoJSON(protected, {
     style: myStyle,
     onEachFeature: onEachFeature
 }).addTo(map);
 
-// ✅ LAST: Add slider interactivity
+var legend = L.control({ position: 'bottomright' });
+
+legend.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'info legend');
+    var grades = [0, 1, 5, 10, 20, 30, 40, 50];
+    var labels = [];
+
+    div.innerHTML += '<strong>% Protected Area</strong><br>';
+
+    for (var i = 0; i < grades.length; i++) {
+        var from = grades[i];
+        var to = grades[i + 1];
+
+        div.innerHTML +=
+            '<i style="background:' + getColor(from + 0.1) + '"></i> ' +
+            from + (to ? '&ndash;' + to + '<br>' : '+');
+    }
+
+    return div;
+};
+
+legend.addTo(map);
+
+
 function moveSlider(value) { 
     document.getElementById('daYear').innerHTML = 'Year: ' + value;
     myCurrentSelectionYear = value;
