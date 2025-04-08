@@ -168,6 +168,51 @@ moveSlider(myCurrentSelectionYear);
 window.onload = function() {
     document.getElementById('yearSlider').value = 2000;
 }; 
+function onEachFeature(feature, layer) {
+    layer.on("click", function (e) {
+        var countryName = feature.properties.NAME;
+        var dataArray = featureToDataArray(feature);
+
+        var values = dataArray.map(d => d.value);
+        var years = dataArray.map(d => d.year);
+
+        var width = 250;
+        var height = 100;
+        var padding = 20;
+
+        var maxValue = Math.max(...values);
+        var minValue = Math.min(...values);
+
+        var points = values.map((v, i) => {
+            let x = padding + (i / (values.length - 1)) * (width - 2 * padding);
+            let y = height - padding - ((v - minValue) / (maxValue - minValue)) * (height - 2 * padding);
+            return `${x},${y}`;
+        });
+
+        var svg = `
+            <svg width="${width}" height="${height}">
+                <polyline 
+                    fill="none" 
+                    stroke="#238b45" 
+                    stroke-width="2" 
+                    points="${points.join(" ")}"/>
+                <line x1="${padding}" y1="${height - padding}" x2="${width - padding}" y2="${height - padding}" stroke="#ccc" />
+                <text x="${width/2}" y="15" text-anchor="middle" font-size="12">${countryName}</text>
+            </svg>
+        `;
+
+        var popupContent = `
+            <div style="width:${width}px">
+                <strong>${countryName}</strong><br>
+                <em>Protected Area (%): 2000–2022</em><br>
+                ${svg}
+            </div>
+        `;
+
+        layer.bindPopup(popupContent).openPopup();
+    });
+}
+
 
 </script>
 
