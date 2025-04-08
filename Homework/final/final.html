@@ -127,7 +127,18 @@ var map = L.map('map').setView([50.1, 10.5], 4);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
-var myCurrentSelectionYear = 2000; 
+var myCurrentSelectionYear = 2000;
+
+function getColor(value) {
+    return value >= 50 ? "#00441b" :  
+           value >= 40 ? "#006d2c" :
+           value >= 30 ? "#238b45" :
+           value >= 20 ? "#41ab5d" :
+           value >= 10 ? "#74c476" :
+           value >= 5  ? "#a1d99b" :
+           value >= 1  ? "#c7e9c0" :
+                        "#f7fcf5"; 
+}
 
 function myStyle(feature) {
     var yearKey = "reshaped_data_Value_" + myCurrentSelectionYear;
@@ -142,34 +153,8 @@ function myStyle(feature) {
     };
 }
 
-function getColor(value) {
-    return value >= 50 ? "#00441b" :  
-           value >= 40 ? "#006d2c" :
-           value >= 30 ? "#238b45" :
-           value >= 20 ? "#41ab5d" :
-           value >= 10 ? "#74c476" :
-           value >= 5  ? "#a1d99b" :
-           value >= 1  ? "#c7e9c0" :
-                        "#f7fcf5"; 
-}
-
-
-
-function moveSlider(value) { 
-    document.getElementById('daYear').innerHTML = 'Year: ' + value;
-    myCurrentSelectionYear = value;
-    geojson.eachLayer(function (layer) {
-        layer.setStyle(myStyle(layer.feature));
-    });
-}
-
-moveSlider(myCurrentSelectionYear); 
-
-window.onload = function() {
-    document.getElementById('yearSlider').value = 2000;
-}; 
 function featureToDataArray(feature) {
-    var dataArray = [
+    return [
         { year: "2000", value: feature.properties["reshaped_data_Value_2000"] },
         { year: "2001", value: feature.properties["reshaped_data_Value_2001"] },
         { year: "2002", value: feature.properties["reshaped_data_Value_2002"] },
@@ -194,10 +179,10 @@ function featureToDataArray(feature) {
         { year: "2021", value: feature.properties["reshaped_data_Value_2021"] },
         { year: "2022", value: feature.properties["reshaped_data_Value_2022"] }
     ];
-    return dataArray;
 }
+
 function onEachFeature(feature, layer) {
-    layer.on("click", function (e) {
+    layer.on("click", function () {
         var countryName = feature.properties.NAME;
         var dataArray = featureToDataArray(feature);
 
@@ -241,10 +226,26 @@ function onEachFeature(feature, layer) {
     });
 }
 
+// ✅ THIRD: Now safe to add geojson layer
 var geojson = L.geoJSON(protected, {
     style: myStyle,
     onEachFeature: onEachFeature
 }).addTo(map);
+
+// ✅ LAST: Add slider interactivity
+function moveSlider(value) { 
+    document.getElementById('daYear').innerHTML = 'Year: ' + value;
+    myCurrentSelectionYear = value;
+    geojson.eachLayer(function (layer) {
+        layer.setStyle(myStyle(layer.feature));
+    });
+}
+
+moveSlider(myCurrentSelectionYear);
+
+window.onload = function() {
+    document.getElementById('yearSlider').value = 2000;
+};
 </script>
 
 </body>
