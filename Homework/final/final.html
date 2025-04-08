@@ -153,10 +153,7 @@ function getColor(value) {
                         "#f7fcf5"; 
 }
 
-var geojson = L.geoJSON(protected, {
-    style: myStyle,
-    onEachFeature: onEachFeature
-}).addTo(map);
+
 
 function moveSlider(value) { 
     document.getElementById('daYear').innerHTML = 'Year: ' + value;
@@ -244,7 +241,10 @@ function onEachFeature(feature, layer) {
     });
 }
 
-
+var geojson = L.geoJSON(protected, {
+    style: myStyle,
+    onEachFeature: onEachFeature
+}).addTo(map);
 </script>
 
 </body>
