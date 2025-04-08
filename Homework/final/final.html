@@ -203,16 +203,32 @@ function onEachFeature(feature, layer) {
         });
 
         var svg = `
-            <svg width="${width}" height="${height}">
+            <svg width="${width}" height="${height + 30}">
+                <!-- Axes -->
+                <line x1="${padding}" y1="${height - padding}" x2="${width - padding}" y2="${height - padding}" stroke="#999"/>
+                <line x1="${padding}" y1="${padding}" x2="${padding}" y2="${height - padding}" stroke="#999"/>
+
+                <!-- Y-axis ticks -->
+                <text x="${padding - 5}" y="${height - padding}" text-anchor="end" font-size="10">${minValue.toFixed(0)}%</text>
+                <text x="${padding - 5}" y="${padding}" text-anchor="end" font-size="10">${maxValue.toFixed(0)}%</text>
+
+                <!-- X-axis ticks -->
+                <text x="${padding}" y="${height - padding + 12}" text-anchor="middle" font-size="10">2000</text>
+                <text x="${width / 2}" y="${height - padding + 12}" text-anchor="middle" font-size="10">2011</text>
+                <text x="${width - padding}" y="${height - padding + 12}" text-anchor="middle" font-size="10">2022</text>
+
+                <!-- Line graph -->
                 <polyline 
                     fill="none" 
                     stroke="#238b45" 
                     stroke-width="2" 
                     points="${points.join(" ")}"/>
-                <line x1="${padding}" y1="${height - padding}" x2="${width - padding}" y2="${height - padding}" stroke="#ccc" />
-                <text x="${width/2}" y="15" text-anchor="middle" font-size="12">${countryName}</text>
+
+                <!-- Country name title -->
+                <text x="${width/2}" y="12" text-anchor="middle" font-size="12">${countryName}</text>
             </svg>
-        `;
+            `;
+
 
         var popupContent = `
             <div style="width:${width}px">
