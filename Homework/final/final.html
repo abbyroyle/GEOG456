@@ -253,12 +253,12 @@ var geojson = L.geoJSON(protected, {
     onEachFeature: onEachFeature
 }).addTo(map);
 
+// Legend Control
 var legend = L.control({ position: 'bottomright' });
 
 legend.onAdd = function (map) {
     var div = L.DomUtil.create('div', 'info legend');
     var grades = [0, 1, 5, 10, 20, 30, 40, 50];
-    var labels = [];
 
     div.innerHTML += '<strong>% Protected Area</strong><br>';
 
@@ -267,8 +267,8 @@ legend.onAdd = function (map) {
         var to = grades[i + 1];
 
         div.innerHTML +=
-            '<i style="background:' + getColor(from + 0.1) + '"></i> ' +
-            from + (to ? '&ndash;' + to + '<br>' : '+');
+            '<div><span style="background:' + getColor(from + 0.1) + '"></span> ' +
+            from + (to ? '&ndash;' + to : '+') + '</div>';
     }
 
     return div;
