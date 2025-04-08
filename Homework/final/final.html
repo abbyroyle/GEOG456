@@ -88,52 +88,98 @@
     <div id="map"></div>
 
 <script>
-    var map = L.map('map').setView([50.1, 10.5], 4);
+var map = L.map('map', {attributionControl: false }).setView([55, 10], 4);
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    }).addTo(map);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    opacity: 0.5,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
-    var myCurrentSelectionYear = 2000; 
 
-    function myStyle(feature) {
-        var yearKey = "reshaped_data_Value_" + myCurrentSelectionYear;
-        var value = feature.properties[yearKey];
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties["reshaped_data_Value_2022"]), 
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        fillOpacity: 0.7
+    };
+}
 
-        return {
-            "color": "white",
-            "weight": 1,
-            "opacity": 0.65,
-            "fillColor": getColor(value),
-            "fillOpacity": 0.75
-        };
-    }
 
-    function getColor(value) {
-        return value >= 50 ? "#00441b" :  
-               value >= 40 ? "#006d2c" :
-               value >= 30 ? "#238b45" :
-               value >= 20 ? "#41ab5d" :
-               value >= 10 ? "#74c476" :
-               value >= 5  ? "#a1d99b" :
-               value >= 1  ? "#c7e9c0" :
-                            "#f7fcf5"; 
-    }
+function getColor(value) {
+    return value >= 50 ? "#00441b" :  
+           value >= 40 ? "#006d2c" :
+           value >= 30 ? "#238b45" :
+           value >= 20 ? "#41ab5d" :
+           value >= 10 ? "#74c476" :
+           value >= 5  ? "#a1d99b" :
+           value >= 1  ? "#c7e9c0" :
+                        "#f7fcf5"; 
+}
 
-    var geojson = L.geoJSON(protected, {style: myStyle}).addTo(map);
+function onEachFeature(feature, layer) {
+    layer.on({mouseover: showGraph});
+}
 
-    function moveSlider(value) { 
-        document.getElementById('daYear').innerHTML = 'Year: ' + value;
-        myCurrentSelectionYear = value;
-        geojson.eachLayer(function (layer) {
-            layer.setStyle(myStyle(layer.feature));
-        });
-    }
+var infoDiv = document.getElementById('info');
 
-    moveSlider(myCurrentSelectionYear); 
+function featureToDataArray(feature) {
+    var dataArray = [
+        { year: "2000", value: feature.properties["reshaped_data_Value_2000"] },
+        { year: "2001", value: feature.properties["reshaped_data_Value_2001"] },
+        { year: "2002", value: feature.properties["reshaped_data_Value_2002"] },
+        { year: "2003", value: feature.properties["reshaped_data_Value_2003"] },
+        { year: "2004", value: feature.properties["reshaped_data_Value_2004"] },
+        { year: "2005", value: feature.properties["reshaped_data_Value_2005"] },
+        { year: "2006", value: feature.properties["reshaped_data_Value_2006"] },
+        { year: "2007", value: feature.properties["reshaped_data_Value_2007"] },
+        { year: "2008", value: feature.properties["reshaped_data_Value_2008"] },
+        { year: "2009", value: feature.properties["reshaped_data_Value_2009"] },
+        { year: "2010", value: feature.properties["reshaped_data_Value_2010"] },
+        { year: "2011", value: feature.properties["reshaped_data_Value_2011"] },
+        { year: "2012", value: feature.properties["reshaped_data_Value_2012"] },
+        { year: "2013", value: feature.properties["reshaped_data_Value_2013"] },
+        { year: "2014", value: feature.properties["reshaped_data_Value_2014"] },
+        { year: "2015", value: feature.properties["reshaped_data_Value_2015"] },
+        { year: "2016", value: feature.properties["reshaped_data_Value_2016"] },
+        { year: "2017", value: feature.properties["reshaped_data_Value_2017"] },
+        { year: "2018", value: feature.properties["reshaped_data_Value_2018"] },
+        { year: "2019", value: feature.properties["reshaped_data_Value_2019"] },
+        { year: "2020", value: feature.properties["reshaped_data_Value_2020"] },
+        { year: "2021", value: feature.properties["reshaped_data_Value_2021"] },
+        { year: "2022", value: feature.properties["reshaped_data_Value_2022"] }
+    ];
+    return dataArray;
+}
 
-    window.onload = function() {
-        document.getElementById('yearSlider').value = 2000;
-    }; 
+
+function showGraph(e) {
+    infoDiv.innerHTML = ''; 
+    var countryName = e.target.feature.properties.NAME;
+    
+    var title = document.createElement("h3");
+    title.innerText = countryName;
+    infoDiv.appendChild(title);
+
+    var dataArray = featureToDataArray(e.target.feature);
+    dataArray.forEach(data => addBar(data));
+}
+
+
+function addBar(data) {
+    var barDiv = document.createElement("div");
+    barDiv.className = "bar";
+    barDiv.style.height = (data.value * 4) + 'px'; 
+    barDiv.innerHTML = data.year + "<br>" + data.value;
+    infoDiv.appendChild(barDiv);
+}
+
+var geojson = L.geoJSON(protected, {
+    style: style,
+    onEachFeature: onEachFeature
+}).addTo(map);
 </script>
 
 </body>
