@@ -374,50 +374,39 @@ var baseMaps = {
     "Percent Change (2000–2022)": percentChangeLayer
 };
 
-var overlayMaps = {
-    "Protected Site Boundaries": protectedSitesLayer
-};
-
-var layerControl = L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
-
-// Start with the Protected Area % Choropleth legend
-percentLegend.addTo(map);
-
-// Listen for layer change to switch legends
-map.on('baselayerchange', function (event) {
-    // Remove both legends
-    map.removeControl(percentLegend);
-    map.removeControl(changeLegend);
-
-    // Add the correct one
-    if (event.name === "Protected Area % Choropleth") {
-        percentLegend.addTo(map);
-    } else if (event.name === "Percent Change (2000–2022)") {
-        changeLegend.addTo(map);
-    }
-});
-
-
-function moveSlider(value) { 
-    document.getElementById('daYear').innerHTML = 'Year: ' + value;
-    myCurrentSelectionYear = value;
-    geojson.eachLayer(function (layer) {
-        layer.setStyle(myStyle(layer.feature));
-    });
-}
-
-moveSlider(myCurrentSelectionYear);
-
-window.onload = function() {
-    document.getElementById('yearSlider').value = 2000;
-};
-var baseMaps = {
-    "Protected Area % Choropleth": geojson,
-    "Percent Change (2000–2022)": percentChangeLayer
-};
-
+var currentLegend = percentLegend; // Track the currently active legend
 
 L.control.layers(baseMaps, null, { collapsed: false }).addTo(map);
+
+// Start with default layer and legend
+map.addLayer(geojson);
+percentLegend.addTo(map);
+
+map.on('baselayerchange', function (event) {
+    map.removeControl(currentLegend);
+
+    if (event.name === "Protected Area % Choropleth") {
+        currentLegend = percentLegend;
+    } else if (event.name === "Percent Change (2000–2022)") {
+        currentLegend = changeLegend;
+    }
+
+    currentLegend.addTo(map);
+});
+
+function moveSlider(value) {
+    document.getElementById('daYear').innerText = 'Year: ' + value;
+    myCurrentSelectionYear = value;
+
+    if (map.hasLayer(geojson)) {
+        geojson.eachLayer(layer => layer.setStyle(myStyle(layer.feature)));
+    }
+}
+
+window.onload = function () {
+    document.getElementById('yearSlider').value = 2000;
+    moveSlider(2000);
+};
 
 
 </script>
