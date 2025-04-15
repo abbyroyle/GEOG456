@@ -281,6 +281,37 @@ var geojson = L.geoJSON(protected, {
     onEachFeature: onEachFeature
 }).addTo(map);
 
+
+function getChangeColor(change) {
+    return change >= 200 ? '#00441b' :
+           change >= 100 ? '#238b45' :
+           change >= 50  ? '#74c476' :
+           change >= 20  ? '#c7e9c0' :
+           change >= 0   ? '#f7fcf5' :
+           change >= -10 ? '#fee5d9' :
+           change >= -50 ? '#fcae91' :
+                           '#fb6a4a';
+}
+
+function changeStyle(feature) {
+    var start = feature.properties["reshaped_data_Value_2000"];
+    var end = feature.properties["reshaped_data_Value_2022"];
+    var change = start !== 0 ? ((end - start) / start) * 100 : 0;
+
+    return {
+        color: 'white',
+        weight: 1,
+        opacity: 0.7,
+        fillColor: getChangeColor(change),
+        fillOpacity: 0.75
+    };
+}
+
+var percentChangeLayer = L.geoJSON(protected, {
+    style: changeStyle,
+    onEachFeature: onEachFeature
+});
+
 // Legend Control
 var legend = L.control({ position: 'bottomright' });
 
@@ -318,37 +349,14 @@ moveSlider(myCurrentSelectionYear);
 window.onload = function() {
     document.getElementById('yearSlider').value = 2000;
 };
-/*
-// Style for protected site polygons
-function polygonStyle(feature) {
-    return {
-        color: '#1f78b4',
-        weight: 2,
-        fillOpacity: 0.4,
-        fillColor: '#a6cee3'
-    };
-}
-
-
-var protectedSitesLayer = L.geoJSON(site, {
-    style: polygonStyle,
-    onEachFeature: function (feature, layer) {
-        var siteName = feature.properties.NAME || "Protected Site";
-        var type = feature.properties.DESIG_ENG || "";
-        layer.bindPopup(`<strong>${siteName}</strong><br>${type}`);
-    }
-});
-
 var baseMaps = {
-    "Protected Area % Choropleth": geojson
+    "Protected Area % Choropleth": geojson,
+    "Percent Change (2000–2022)": percentChangeLayer
 };
 
-var overlayMaps = {
-    "Protected Site Boundaries": protectedSitesLayer
-};
 
-L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
-*/
+L.control.layers(baseMaps,{ collapsed: false }).addTo(map);
+
 
 </script>
 
