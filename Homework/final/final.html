@@ -285,25 +285,25 @@ var geojson = L.geoJSON(protected, {
 }).addTo(map);
 
 
-function getChangeColor(change) {
-    return change >= 200 ? '#00441b' :
-           change >= 100 ? '#238b45' :
-           change >= 50  ? '#74c476' :
-           change >= 20  ? '#c7e9c0' :
-           change >= 0   ? '#f7fcf5' :
-                           '#fb6a4a';
+let year = 2001;
+
+function getRateColor(value) {
+    return value >= 10 ? '#253494' :
+           value >= 5  ? '#2c7fb8' :
+           value >= 2  ? '#41b6c4' :
+           value >= 0  ? '#a1dab4' :
+           value >= -2 ? '#fcbba1' :
+           value >= -5 ? '#fc9272' : '#de2d26';
 }
 
-function changeStyle(feature) {
-    var start = feature.properties["reshaped_data_Value_2000"];
-    var end = feature.properties["reshaped_data_Value_2022"];
-    var change = start !== 0 ? ((end - start) / start) * 100 : 0;
-
+function rateStyle(feature) {
+    let prev = feature.properties['reshaped_data_Value_' + (year - 1)];
+    let current = feature.properties['reshaped_data_Value_' + year];
+    let change = (prev && current && prev !== 0) ? ((current - prev) / prev) * 100 : 0;
     return {
         color: 'white',
         weight: 1,
-        opacity: 0.7,
-        fillColor: getChangeColor(change),
+        fillColor: getRateColor(change),
         fillOpacity: 0.75
     };
 }
@@ -381,6 +381,10 @@ function moveSlider(value) {
 
     if (map.hasLayer(geojson)) {
         geojson.eachLayer(layer => layer.setStyle(myStyle(layer.feature)));
+    }
+
+    if (map.hasLayer(percentChangeLayer)) {
+        percentChangeLayer.eachLayer(layer => layer.setStyle(changeStyle(layer.feature)));
     }
 }
 
