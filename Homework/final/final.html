@@ -39,7 +39,7 @@
         color: #205522;
     }
 
-    #map {
+    #map #staticMap {
         width: 1000px;
         height: 600px;
         margin: 20px auto;
@@ -146,7 +146,9 @@
 
     <input id="yearSlider" type="range" name="year" min="2000" max="2022" oninput="moveSlider(this.value)" value="2000">
     <div id="map"></div>
-  
+    
+    <h2>Static Map: Total Percent Change (2000–2022)</h2>
+    <div id="staticMap"></div>
 
 <script>
 
@@ -385,7 +387,31 @@ window.onload = function () {
     document.getElementById('yearSlider').value = 2000;
     moveSlider(2000);
 };
+var staticMap = L.map('staticMap').setView([50.1, 10.5], 4);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(staticMap);
 
+function getStaticChangeColor(change) {
+    return change >= 200 ? '#3f007d' :
+           change >= 100 ? '#6a51a3' :
+           change >= 50  ? '#807dba' :
+           change >= 20  ? '#bcbddc' :
+           change >= 0   ? '#dadaeb' : '#f2f0f7';
+}
+
+function staticChangeStyle(feature) {
+    let start = feature.properties["reshaped_data_Value_2000"];
+    let end = feature.properties["reshaped_data_Value_2022"];
+    let change = start !== 0 ? ((end - start) / start) * 100 : 0;
+
+    return {
+        color: 'white',
+        weight: 1,
+        fillColor: getStaticChangeColor(change),
+        fillOpacity: 0.75
+    };
+}
+
+L.geoJSON(protected, { style: staticChangeStyle }).addTo(staticMap);
 
 </script>
 
