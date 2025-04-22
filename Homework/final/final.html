@@ -421,7 +421,7 @@ window.onload = function () {
     moveSlider(2000);
 };
 var staticMap = L.map('staticMap').setView([50.1, 10.5], 4);
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(staticMap);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}').addTo(staticMap);
 
 function getStaticChangeColor(change) {
     return change >= 200 ? '#3f007d' :
