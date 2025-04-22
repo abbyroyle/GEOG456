@@ -424,12 +424,15 @@ var staticMap = L.map('staticMap').setView([50.1, 10.5], 4);
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}').addTo(staticMap);
 
 function getStaticChangeColor(change) {
-    return change >= 200 ? '#3f007d' :
-           change >= 100 ? '#6a51a3' :
-           change >= 50  ? '#807dba' :
-           change >= 20  ? '#bcbddc' :
-           change >= 0   ? '#dadaeb' : '#f2f0f7';
+    return change >= 500 ? '#3f007d' :
+           change >= 400 ? '#54278f' :
+           change >= 300 ? '#6a51a3' :
+           change >= 200 ? '#807dba' :
+           change >= 100 ? '#bcbddc' :
+           change >= 50  ? '#dadaeb' :
+           change >= 0   ? '#efedf5' : '#f7f4f9';
 }
+
 
 function staticChangeStyle(feature) {
     let start = feature.properties["terrest_data_Value_2000"];
@@ -461,7 +464,7 @@ var staticLegend = L.control({ position: 'bottomright' });
 
 staticLegend.onAdd = function (map) {
     var div = L.DomUtil.create('div', 'info legend');
-    var grades = [0, 20, 50, 100, 200];
+    var grades = [0, 50, 100, 200, 300, 400, 500];
 
     div.innerHTML += '<strong>Total % Change</strong><br>';
     for (var i = 0; i < grades.length; i++) {
