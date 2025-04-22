@@ -444,7 +444,19 @@ function staticChangeStyle(feature) {
     };
 }
 
-L.geoJSON(pro, { style: staticChangeStyle }).addTo(staticMap);
+L.geoJSON(pro, {
+    style: staticChangeStyle,
+    onEachFeature: function (feature, layer) {
+        let name = feature.properties.NAME;
+        let start = feature.properties["terrest_data_Value_2000"];
+        let end = feature.properties["terrest_data_Value_2022"];
+        let change = start !== 0 ? ((end - start) / start) * 100 : 0;
+
+        layer.bindPopup(`<strong>${name}</strong><br>Total Change 2000–2022: ${change.toFixed(2)}%`);
+    }
+}).addTo(staticMap);
+
+
 var staticLegend = L.control({ position: 'bottomright' });
 
 staticLegend.onAdd = function (map) {
