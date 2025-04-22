@@ -383,7 +383,7 @@ function moveSlider(value) {
     year = parseInt(value); 
 
     if (map.hasLayer(geojson)) {
-        geojson.eachLayer(layer => layer.setStyle(rat(layer.feature)));
+        geojson.eachLayer(layer => layer.setStyle(myStyle(layer.feature)));
     }
 
     if (map.hasLayer(percentChangeLayer)) {
