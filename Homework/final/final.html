@@ -124,7 +124,7 @@
 
 <body>
 
-    <h2>Protected Areas in the EU from 2000–2022</h2>
+    <h2>Change in Protected Areas in the EU from 2000–2022</h2>
     <h3>Abby Royle</h3>
     
 
@@ -148,7 +148,7 @@
     <input id="yearSlider" type="range" name="year" min="2000" max="2022" oninput="moveSlider(this.value)" value="2000">
     <div id="map"></div>
     
-    <h2>Static Map: Total Percent Change (2000–2022)</h2>
+    <h2>Static Map: Total Percent Change (2000-2022)</h2>
     <div id="staticMap"></div>
 
 <script>
@@ -285,7 +285,7 @@ var geojson = L.geoJSON(protected, {
 }).addTo(map);
 
 
-let year = 2001;
+var year = 2001;  
 
 function getRateColor(value) {
     return value >= 10 ? '#00441b' :
@@ -351,7 +351,7 @@ changeLegend.onAdd = function (map) {
 
 var baseMaps = {
     "Protected Area % Choropleth": geojson,
-    "Percent Change (2000–2022)": percentChangeLayer
+    "Percent Change (by year)": percentChangeLayer
 };
 
 var currentLegend = percentLegend;
@@ -380,6 +380,7 @@ map.on('baselayerchange', function (e) {
 function moveSlider(value) {
     document.getElementById('daYear').innerText = 'Year: ' + value;
     myCurrentSelectionYear = value;
+    year = parseInt(value); 
 
     if (map.hasLayer(geojson)) {
         geojson.eachLayer(layer => layer.setStyle(myStyle(layer.feature)));
